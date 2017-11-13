@@ -48,7 +48,7 @@ setup(
                  'catchpycli'},
     entry_points={
         'console_scripts': [
-            'catchpycli=catchpycli.cli:main'
+            'catchpycli=cli:cli'
         ]
     },
     include_package_data=True,

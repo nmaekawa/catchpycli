@@ -5,8 +5,33 @@ Defines the main API client class
 """
 
 import os
+import json
 import requests
+from urllib.parse import urljoin
 
+####################
+# set django context
+#
+import django
+from django.conf import settings
+from dotenv import load_dotenv
+
+# if dotenv file, load it
+dotenv_path = os.environ.get('CATCHPY_DOTENV_PATH', None)
+if dotenv_path:
+    load_dotenv(dotenv_path)
+
+# define settings if not in environment
+if os.environ.get("DJANGO_SETTINGS_MODULE", None) is None:
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "catchpy.settings.dev")
+
+django.setup()
+#
+####################
+
+#
+# now we can import django app modules
+#
 from consumer.catchjwt import encode_catchjwt
 
 from .utils import default_useragent
@@ -29,10 +54,10 @@ class CatchpyCli(object):
         }
 
 
-    def make_authorization_header(self, user):
+    def make_authorization_token(self, user):
         jwt = encode_catchjwt(
             apikey=self.api_key, secret=self.secret_key, user=user)
-        return 'token {}'.format(jwt)
+        return jwt.decode('utf-8')
 
 
     def request_no_body(
@@ -63,7 +88,7 @@ class CatchpyCli(object):
 
         url = urljoin(self.url, path)
         resp = getattr(requests, method)(
-                url, data=data, headers=headers, timeout=self.timeout)
+                url, data=json.dumps(data), headers=headers, timeout=self.timeout)
 
         resp.raise_for_status()
         return resp
