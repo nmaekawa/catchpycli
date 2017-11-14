@@ -31,8 +31,6 @@ requirements = [
 
 test_requirements = [
     "pytest",
-    "httpretty",
-    "sure"
 ]
 
 setup(
