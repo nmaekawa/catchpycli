@@ -42,11 +42,13 @@ _default_timeout = 5
 
 class CatchpyCli(object):
 
-    def __init__(self, base_url, api_key, secret_key, timeout=None):
+    def __init__(self, base_url, api_key, secret_key,
+                 timeout=None, skip_ssl=False):
         self.url = base_url
         self.api_key = api_key
         self.secret_key = secret_key
         self.timeout = timeout or _default_timeout
+        self.verify_ssl = not skip_ssl
         self.default_headers = {
             'User-Agent': default_useragent(),
             'Accept': 'Application/json',
@@ -71,7 +73,8 @@ class CatchpyCli(object):
 
         url = urljoin(self.url, path)
         resp = getattr(requests, method)(
-            url, params=params, headers=headers, timeout=self.timeout)
+            url, params=params, headers=headers, timeout=self.timeout,
+            verify=self.verify_ssl)
 
         resp.raise_for_status()
         return resp
@@ -88,7 +91,8 @@ class CatchpyCli(object):
 
         url = urljoin(self.url, path)
         resp = getattr(requests, method)(
-                url, data=json.dumps(data), headers=headers, timeout=self.timeout)
+                url, data=json.dumps(data), headers=headers,
+                timeout=self.timeout, verify=self.verify_ssl)
 
         resp.raise_for_status()
         return resp

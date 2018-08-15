@@ -50,10 +50,8 @@ def cli():
 @click.option('--api_key', required=True)
 @click.option('--secret_key', required=True)
 @click.option('--use_annotatorjs', default=False)
-@click.option('--verbose', default=True)
 def cleanup(
-    base_url, api_key, secret_key,
-    use_annotatorjs, verbose):
+    base_url, api_key, secret_key, use_annotatorjs):
 
     cli = CatchpyCli(base_url=base_url, api_key=api_key, secret_key=secret_key)
 
@@ -81,13 +79,16 @@ def cleanup(
 @click.option('--base_url', required=True, help='include http/https')
 @click.option('--api_key', required=True)
 @click.option('--secret_key', required=True)
-@click.option('--use_annotatorjs', default=False)
-@click.option('--verbose', default=True)
+@click.option('--use_annotatorjs', is_flag=True)
+@click.option('--skip_ssl', is_flag=True, help='do not check ssl certs')
 def smoke_test(
     base_url, api_key, secret_key,
-    use_annotatorjs, verbose):
+    use_annotatorjs, skip_ssl):
 
-    cli = CatchpyCli(base_url=base_url, api_key=api_key, secret_key=secret_key)
+    click.echo('use_annojs({}), skip_ssl({})'.format(use_annotatorjs, skip_ssl))
+
+    cli = CatchpyCli(base_url=base_url, api_key=api_key, secret_key=secret_key,
+                    skip_ssl=skip_ssl)
 
     anno_obj = data.make_annotation_json_object()
 
@@ -155,12 +156,12 @@ def smoke_test(
     assert Catcha.are_similar(anno_obj2, response_read)
 
     # delete remaining annotation
-    resp_delete = Annos.delete(
-            cli, anno_id=anno_obj2['id'],
-            requesting_user=anno_obj2['creator']['id'])
-    response_delete = resp_delete.json()
-    assert response_delete is not None
-    assert Catcha.are_similar(anno_obj2, response_delete)
+    #resp_delete = Annos.delete(
+    #        cli, anno_id=anno_obj2['id'],
+    #        requesting_user=anno_obj2['creator']['id'])
+    #response_delete = resp_delete.json()
+    #assert response_delete is not None
+    #assert Catcha.are_similar(anno_obj2, response_delete)
 
 
 if __name__ == "__main__":

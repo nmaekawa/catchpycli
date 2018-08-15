@@ -15,7 +15,9 @@ and install both from source in your virtualenv
     $> git clone https://github.com/nmaekawa/catchpy.git
     $> git clone https://github.com/nmaekawa/catchpycli.git
     $> source PATH_TO_VIRTUALENV/bin/activate
+    [VENV] $> cd catchpy; pip install catchpy/requirements/dev.txt
     [VENV] $> cd catchpy; pip install -e .
+    [VENV] $> cd ../catchpycli; pip install requirements/dev.txt
     [VENV] $> cd ../catchpycli; pip install -e .
 
 
@@ -23,14 +25,16 @@ and install both from source in your virtualenv
 cli
 ----
 
-this client comes with a command line interface to perform a simple test the
+This client comes with a command line interface to perform a simple test the
 catchpy crud api. The cli needs a dotenv file to configure catchpy django app.
+
 Check what the dotenv file looks like in `catchpycli/dotenvfile_example.env`.
 Note that database configs don't have to point to a working postgres server.
 
 To check how to use the command line client do:
 
-    [VENV] $> catchpycli --help
+    [VENV] $> cd catchpycli
+    [VENV] $> CATCHPY_DOTENV_PATH=./dotenvfile_example.env catchpycli --help
 
 
 license
