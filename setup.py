@@ -35,7 +35,7 @@ test_requirements = [
 
 setup(
     name='catchpycli',
-    version='0.1.0',
+    version=version,
     description="python  client library for catchpy rest api",
     long_description=readme,
     author="nmaekawa",

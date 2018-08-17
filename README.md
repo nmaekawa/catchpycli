@@ -29,7 +29,8 @@ This client comes with a command line interface to perform a simple test the
 catchpy crud api. The cli needs a dotenv file to configure catchpy django app.
 
 Check what the dotenv file looks like in `catchpycli/dotenvfile_example.env`.
-Note that database configs don't have to point to a working postgres server.
+Note that the only relevant env var is `DJANGO_SETTINGS_MODULE`, the other vars
+just need to be defined but are not used by catchpycli.
 
 To check how to use the command line client do:
 
